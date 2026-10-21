@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  # This forces the .NET SDK to use the modern Microsoft.Testing.Platform runner globally
-  DOTNET_TEST_RUNNER: Microsoft.Testing.Platform
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -29,7 +25,6 @@ jobs:
     - name: Build Solution
       run: dotnet build TestTarifffs.slnx --no-restore --configuration Release
 
-    - name: Run Unit Tests
-      # Using --project tells the runner exactly where the executable test code is
-      run: dotnet test --project RecordApp.Tests/RecordApp.Tests.csproj --no-build --configuration Release
-
+    - name: Run Unit Tests Natively
+      # This bypasses the broken dotnet test orchestrator and runs the executable tests directly
+      run: dotnet run --project RecordApp.Tests/RecordApp.Tests.csproj --no-build --configuration Release
