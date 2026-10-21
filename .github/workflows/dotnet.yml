@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  # This forces the .NET SDK to use the modern Microsoft.Testing.Platform runner globally
+  DOTNET_TEST_RUNNER: Microsoft.Testing.Platform
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -17,7 +21,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '10.x' # Visual Studio 2026 targets .NET 9 by default
+        dotnet-version: '9.x'
 
     - name: Restore dependencies
       run: dotnet restore TestTarifffs.slnx
@@ -26,4 +30,5 @@ jobs:
       run: dotnet build TestTarifffs.slnx --no-restore --configuration Release
 
     - name: Run Unit Tests
-      run: dotnet test TestTarifffs.slnx --no-build --configuration Release --verbosity normal
+      # Modern MTP mode expects the --solution flag explicitly when targeting a solution file
+      run: dotnet test --solution TestTarifffs.slnx --no-build --configuration Release
