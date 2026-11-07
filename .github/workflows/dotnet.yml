@@ -34,8 +34,8 @@ jobs:
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
     - name: Generate HTML Coverage Report
-      # Converts the cobertura XML file into a human-readable web folder named 'coveragereport'
-      run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+      # Converts any Cobertura XML file into a human-readable web folder
+      run: reportgenerator -reports:"**/*.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
 
     - name: Upload Coverage Report Artifact
       # This automated step grabs your folder and safely saves it to GitHub for you to download
